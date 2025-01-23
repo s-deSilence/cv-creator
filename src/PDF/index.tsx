@@ -1,4 +1,4 @@
-import { Document, Image, Page, StyleSheet, Text, View, PDFViewer, Font } from "@react-pdf/renderer";
+import { Document, Image, Page, StyleSheet, Text, View, PDFViewer, Font, PDFDownloadLink } from "@react-pdf/renderer";
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { StoreType } from "../store/store";
@@ -159,111 +159,119 @@ const styles = StyleSheet.create({
 
 //waiting for crush fix in https://github.com/diegomura/react-pdf/issues/2978
 
-export const PDF:FC = () => {
+export const PDF:FC<{ download?: boolean}> = ({ download }) => {
 
     const { firstName, lastName, jobTitle, photo, summary, phone, email, city } = useSelector((state:StoreType) => state.personal.main);
     const { education, employments, languages, skills } = useSelector((state:StoreType) => state.personal)
     const { telegram, github, linkedin} = useSelector((state:StoreType) => state.personal.links);
 
+    const document = <Document>
+                        <Page>
+                            <View style={styles.wrapper}>
+                                <View style={styles.left}>
+                                    <View style={styles.avatarWrapper}>
+                                        <Image src={photo} style={styles.avatar} cache={false} />
+                                    </View>
+                                    <Text style={styles.personalInfoTitle}>Personal Info</Text>
+                                    <View style={styles.leftSectionWrapper}>
+                                        <View style={styles.iconWrapper}>
+                                            <PhonePDFIcon />
+                                        </View>
+                                        <Text style={styles.leftSectionValue}>{phone}</Text>
+                                    </View>
+                                    <View style={styles.leftSectionWrapper}>
+                                        <View style={styles.iconWrapper}>
+                                            <MailPDFIcon />
+                                        </View>
+                                        <Text style={styles.leftSectionValue}>{email}</Text>
+                                    </View>
+                                    <View style={styles.leftSectionWrapper}>
+                                        <View style={styles.iconWrapper}>
+                                            <LocationPDFIcon />
+                                        </View>
+                                        <Text style={styles.leftSectionValue}>{city}</Text>
+                                    </View>
+                                    { telegram && ( <View style={styles.leftSectionWrapper}>
+                                        <View style={styles.iconWrapper}>
+                                            <TelegramPDFIcon />
+                                        </View>
+                                        <Text style={styles.leftSectionValue}>{telegram}</Text>
+                                    </View> )}
+                                    { github && ( <View style={styles.leftSectionWrapper}>
+                                        <View style={styles.iconWrapper}>
+                                            <GitHubPDFIcon />
+                                        </View>
+                                        <Text style={styles.leftSectionValue}>{github}</Text>
+                                    </View> )}
+                                    { linkedin && ( <View style={styles.leftSectionWrapper}>
+                                        <View style={styles.iconWrapper}>
+                                            <LinkedInPDFIcon />
+                                        </View>
+                                        <Text style={styles.leftSectionValue}>{linkedin}</Text>
+                                    </View> )}
+                                    <Text style={styles.personalInfoTitle}>Skills</Text>
+                                    { skills.map((skill, idx) => (
+                                        <View key={idx} style={styles.langWrapper}>
+                                            <View style={styles.langDescWrapper}>
+                                                <Text style={styles.langTitle}>{skill.name}</Text>
+                                                <Text style={styles.langDesc}>{skill.exp}</Text>
+                                            </View>
+                                            <View style={styles.langItemsWrapper}>
+                                                { Array(5).fill("").map((_,idx) => (
+                                                    <View style={ idx <= skill.level ? styles.langItem : styles.langItemEmpty } key={idx}/>
+                                                ))}
+                                            </View>
+                                        </View>
+                                    ))}
+                                    <Text style={styles.personalInfoTitle}>Languages</Text>
+                                    { languages.map((lang, idx) => (
+                                        <View key={idx} style={styles.langWrapper}>
+                                            <View style={styles.langDescWrapper}>
+                                                <Text style={styles.langTitle}>{lang.lang}</Text>
+                                                <Text style={styles.langDesc}>{lang.levelDesc}</Text>
+                                            </View>
+                                            <View style={styles.langItemsWrapper}>
+                                                { Array(5).fill("").map((_,idx) => (
+                                                    <View style={ idx <= lang.level ? styles.langItem : styles.langItemEmpty } key={idx}/>
+                                                ))}
+                                            </View>
+                                        </View>
+                                    ))}
+                                </View>
+                                <View style={styles.right}>
+                                    <Text style={styles.name}>{firstName} {lastName}</Text>
+                                    <Text style={styles.jobTitle}>{jobTitle}</Text>
+                                    <Text style={styles.summary}>{summary}</Text>
+                                    <Text style={styles.sectionTitle}>Work Experience</Text>
+                                    { employments.map((employment, idx) => (
+                                        <View key={idx} style={styles.experienceWrapper}>
+                                            <Text style={styles.experienceItemTitle}>{employment.title}, {employment.employer}, {employment.city} </Text>
+                                            <Text style={styles.experienceItemDate}>{employment.startDate} - {employment.endDate}</Text>
+                                            <Text style={styles.experienceItemDesc}>{employment.description}</Text>
+                                        </View>
+                                    ))}
+                                    <Text style={styles.sectionTitle}>Education</Text>
+                                    { education.map((education, idx) => (
+                                        <View key={idx} style={styles.experienceWrapper}>
+                                            <Text style={styles.experienceItemTitle}>{education.degree}, {education.title} </Text>
+                                            <Text style={styles.experienceItemDate}>{education.startDate} - {education.endDate}</Text>
+                                            <Text style={styles.experienceItemDesc}>{education.description}</Text>
+                                        </View>
+                                    ))}
+                                </View>
+                            </View>
+                        </Page>
+                    </Document>
+    
+    if( download ){
+        return (
+            <PDFDownloadLink document={document} fileName="cv.pdf">Download</PDFDownloadLink>
+        )
+    }
+
     return (
         <PDFViewer width={'430px'} height={"605px"} showToolbar={false}>
-            <Document>
-                <Page>
-                    <View style={styles.wrapper}>
-                        <View style={styles.left}>
-                            <View style={styles.avatarWrapper}>
-                                <Image src={photo} style={styles.avatar} cache={false} />
-                            </View>
-                            <Text style={styles.personalInfoTitle}>Personal Info</Text>
-                            <View style={styles.leftSectionWrapper}>
-                                <View style={styles.iconWrapper}>
-                                    <PhonePDFIcon />
-                                </View>
-                                <Text style={styles.leftSectionValue}>{phone}</Text>
-                            </View>
-                            <View style={styles.leftSectionWrapper}>
-                                <View style={styles.iconWrapper}>
-                                    <MailPDFIcon />
-                                </View>
-                                <Text style={styles.leftSectionValue}>{email}</Text>
-                            </View>
-                            <View style={styles.leftSectionWrapper}>
-                                <View style={styles.iconWrapper}>
-                                    <LocationPDFIcon />
-                                </View>
-                                <Text style={styles.leftSectionValue}>{city}</Text>
-                            </View>
-                            { telegram && ( <View style={styles.leftSectionWrapper}>
-                                <View style={styles.iconWrapper}>
-                                    <TelegramPDFIcon />
-                                </View>
-                                <Text style={styles.leftSectionValue}>{telegram}</Text>
-                            </View> )}
-                            { github && ( <View style={styles.leftSectionWrapper}>
-                                <View style={styles.iconWrapper}>
-                                    <GitHubPDFIcon />
-                                </View>
-                                <Text style={styles.leftSectionValue}>{github}</Text>
-                            </View> )}
-                            { linkedin && ( <View style={styles.leftSectionWrapper}>
-                                <View style={styles.iconWrapper}>
-                                    <LinkedInPDFIcon />
-                                </View>
-                                <Text style={styles.leftSectionValue}>{linkedin}</Text>
-                            </View> )}
-                            <Text style={styles.personalInfoTitle}>Skills</Text>
-                            { skills.map((skill, idx) => (
-                                <View key={idx} style={styles.langWrapper}>
-                                    <View style={styles.langDescWrapper}>
-                                        <Text style={styles.langTitle}>{skill.name}</Text>
-                                        <Text style={styles.langDesc}>{skill.exp}</Text>
-                                    </View>
-                                    <View style={styles.langItemsWrapper}>
-                                        { Array(5).fill("").map((_,idx) => (
-                                            <View style={ idx <= skill.level ? styles.langItem : styles.langItemEmpty } key={idx}/>
-                                        ))}
-                                    </View>
-                                </View>
-                            ))}
-                            <Text style={styles.personalInfoTitle}>Languages</Text>
-                            { languages.map((lang, idx) => (
-                                <View key={idx} style={styles.langWrapper}>
-                                    <View style={styles.langDescWrapper}>
-                                        <Text style={styles.langTitle}>{lang.lang}</Text>
-                                        <Text style={styles.langDesc}>{lang.levelDesc}</Text>
-                                    </View>
-                                    <View style={styles.langItemsWrapper}>
-                                        { Array(5).fill("").map((_,idx) => (
-                                            <View style={ idx <= lang.level ? styles.langItem : styles.langItemEmpty } key={idx}/>
-                                        ))}
-                                    </View>
-                                </View>
-                            ))}
-                        </View>
-                        <View style={styles.right}>
-                            <Text style={styles.name}>{firstName} {lastName}</Text>
-                            <Text style={styles.jobTitle}>{jobTitle}</Text>
-                            <Text style={styles.summary}>{summary}</Text>
-                            <Text style={styles.sectionTitle}>Work Experience</Text>
-                            { employments.map((employment, idx) => (
-                                <View key={idx} style={styles.experienceWrapper}>
-                                    <Text style={styles.experienceItemTitle}>{employment.title}, {employment.employer}, {employment.city} </Text>
-                                    <Text style={styles.experienceItemDate}>{employment.startDate} - {employment.endDate}</Text>
-                                    <Text style={styles.experienceItemDesc}>{employment.description}</Text>
-                                </View>
-                            ))}
-                            <Text style={styles.sectionTitle}>Education</Text>
-                            { education.map((education, idx) => (
-                                <View key={idx} style={styles.experienceWrapper}>
-                                    <Text style={styles.experienceItemTitle}>{education.degree}, {education.title} </Text>
-                                    <Text style={styles.experienceItemDate}>{education.startDate} - {education.endDate}</Text>
-                                    <Text style={styles.experienceItemDesc}>{education.description}</Text>
-                                </View>
-                            ))}
-                        </View>
-                    </View>
-                </Page>
-            </Document>
+            { document }
         </PDFViewer>
         
     )

@@ -8,6 +8,7 @@ import { PDF } from "../PDF"
 import { LinksForm } from "../LinksForm"
 import { LanguagesForm } from "../LanguagesForm"
 import { SkillsForm } from "../SkillsForm"
+import { PDFDownloadLink } from "@react-pdf/renderer"
 
 export const App = () => {
 
@@ -28,6 +29,9 @@ export const App = () => {
                 </div>
                 <div style={{ background: "rgb(101, 110, 131)", width:'60%', position:'fixed', right: 0, top: 0, bottom:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
                     <PDF />
+                    <div className="download-wrapper">
+                        <PDF download={true}/>
+                    </div>
                 </div>
             </div>
         </Provider>
