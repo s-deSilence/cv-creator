@@ -67,16 +67,16 @@ export const LanguagesForm:FC = () => {
     }, [fields, JSON.stringify(values)])
 
     return (
-        <div style={{ marginBottom: '16px'}}>
+        <div className="form-block">
             <Card title="Languages" bordered={false}>
                 <Collapse 
                     items={collapseItems}
                     bordered={false}
                 />
-                <div style={{ textAlign:'center'}}>
+                <div className="form-button_add-wrapper">
                     <Button 
                         onClick={() => append({ lang: "", level: 0, levelDesc: "" })}
-                        style={{ marginTop: '16px'}}
+                        className="form-button_add"
                         icon={<PlusOutlined />}
                     >Add</Button>
                 </div>

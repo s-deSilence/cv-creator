@@ -76,16 +76,16 @@ export const EmploymentHistoryForm:FC = () => {
     }, [fields, JSON.stringify(values)])
 
     return (
-        <div style={{ marginBottom: '16px'}}>
+        <div className="form-block">
             <Card title="Employment History" bordered={false}>
                 <Collapse
                     items={collapseItems}
                     bordered={false} 
                 />
-                <div style={{ textAlign:'center'}}>
+                <div className="form-button_add-wrapper">
                     <Button 
                         onClick={() => append({ city:"", description:"", title: "", employer:"", startDate:"", endDate:"" })}
-                        style={{ marginTop: '16px'}}
+                        className="form-button_add"
                         icon={<PlusOutlined />}
                     >Add new Employment</Button>
                 </div>

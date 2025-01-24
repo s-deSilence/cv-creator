@@ -23,3 +23,60 @@
         text-decoration: none;
     }
 }
+
+.app{
+    &-wrapper{
+        display: flex; 
+        height: 100vh;
+        position: relative;
+        width: 100%;
+    }
+    &-left{
+        background: #fafafa;
+        width:40%; 
+        padding: 25px;
+    }
+    &-fake_right{
+        width: 60%;
+        padding: 25px;
+    }
+    &-right{
+        background: rgb(101, 110, 131);
+        width:60%;
+        position:fixed;
+        right: 0;
+        top: 0;
+        bottom:0;
+        display:flex;
+        align-items:center;
+        justify-content: center;
+    }
+}
+.form{
+    &-block{
+        margin-bottom: 16px;
+    }
+    &-button_add{
+        margin-top: 16px;
+        &-wrapper{
+            text-align: center;
+        }
+    }
+}
+.avatar{
+    width: 100%; 
+    border-radius: 50%;
+    &-wrapper{
+        text-align:center;
+        padding-top:32px;
+        padding-bottom: 38px;
+    }
+    &-button{
+        border: none;
+        background:none;
+        &-label{
+            margin-top: 8px;
+        }
+    }
+}
+

@@ -29,9 +29,8 @@ export const LinksForm:FC = () => {
     }, [JSON.stringify(values)])
 
     return (
-        <div style={{ marginBottom: '16px'}}>
+        <div className="form-block">
             <Card title="Links" bordered={false}>
-                
                 <Row gutter={[16, 16]}>
                     <Col span={12}>
                         <FormItem control={control} name="links.telegram" label={"Telegram"}>
@@ -47,7 +46,6 @@ export const LinksForm:FC = () => {
                         </FormItem>
                     </Col>
                 </Row>
-
             </Card>
         </div>
     )

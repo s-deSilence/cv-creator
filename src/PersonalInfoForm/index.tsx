@@ -45,9 +45,8 @@ export const PersonalInfoForm:FC = () => {
       };
 
     return (
-        <div style={{ marginBottom: '16px'}}>
+        <div className="form-block">
             <Card title="Personal Info" bordered={false}>
-                
                 <Row gutter={[16, 16]}>
                     <Col span={12}>
                         <FormItem control={control} name="main.jobTitle" label={"Job title"}>
@@ -64,7 +63,7 @@ export const PersonalInfoForm:FC = () => {
                         </FormItem>
                     </Col>
                     <Col span={12}>
-                        <div style={{ textAlign:'center', paddingTop:'32px', paddingBottom: '38px'}}>
+                        <div className="avatar-wrapper">
                             <Upload 
                                 name="avatar" 
                                 listType={"picture-circle"} 
@@ -74,10 +73,10 @@ export const PersonalInfoForm:FC = () => {
                             >
                                 {
                                     imgUrl 
-                                        ?   <img src={imgUrl} alt="avatar" style={{ width: '100%', borderRadius:'50%' }} />
-                                        :   <button type="button" style={{ border:'none', background:'none'}}>
+                                        ?   <img src={imgUrl} alt="avatar" className="avatar" />
+                                        :   <button type="button" className="avatar-button">
                                                 { loading ? <LoadingOutlined /> : <PlusOutlined /> }
-                                                <div style={{ marginTop:'8px'}}>{"Upload"}</div>
+                                                <div className="avatar-button-label">{"Upload"}</div>
                                             </button>
                                 }
                             </Upload>
