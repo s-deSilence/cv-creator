@@ -1,12 +1,13 @@
 import { FC, useEffect, useMemo } from "react";
-import { Row, Input, Col, Button, Card, Collapse } from "antd";
+import { Row, Input, Col } from "antd";
 import { useForm } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 import { FormItem } from "react-hook-form-antd";
 import { useDispatch } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce';
 import { defaultFormData, setEducation } from "../store/slices";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined} from "@ant-design/icons";
+import { CardBlock } from "../Card";
 
 export const EducationForm:FC = () => {
 
@@ -75,23 +76,9 @@ export const EducationForm:FC = () => {
             }))
         }, [fields, JSON.stringify(values)])
 
-    return (
-        <div className="form-block">
-            <Card title="Education" bordered={false}>
-                <Collapse 
-                    items={collapseItems}
-                    bordered={false}
-                />
-                <div className="form-button_add-wrapper">
-                    <Button 
-                        onClick={() => append({ city:"", description:"", title: "", degree:"", startDate:"", endDate:"" })}
-                        className="form-button_add"
-                        icon={<PlusOutlined />}
-                    >Add</Button>
-                </div>
-                
-            </Card>
-            
-        </div>
-    )
+    return  <CardBlock 
+                title="Education"
+                collapseItems={collapseItems}
+                onAppend={() => append({ city:"", description:"", title: "", degree:"", startDate:"", endDate:"" })}
+            />
 }

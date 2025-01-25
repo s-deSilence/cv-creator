@@ -1,14 +1,13 @@
-import { Row, Input, Col, Card } from "antd";
-import { FC, useEffect, useState } from "react";
+import { Row, Input, Col } from "antd";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FormItem } from "react-hook-form-antd";
 import { useDispatch } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce';
 import { defaultFormData, setLinks} from "../store/slices";
+import { CardBlock } from "../Card";
 
 export const LinksForm:FC = () => {
-
-    const [ loading, setLoading ] = useState(false)
 
     const { watch, control, setValue } = useForm({
         defaultValues: {
@@ -29,9 +28,8 @@ export const LinksForm:FC = () => {
     }, [JSON.stringify(values)])
 
     return (
-        <div className="form-block">
-            <Card title="Links" bordered={false}>
-                <Row gutter={[16, 16]}>
+        <CardBlock title="Links" >
+            <Row gutter={[16, 16]}>
                     <Col span={12}>
                         <FormItem control={control} name="links.telegram" label={"Telegram"}>
                             <Input />
@@ -46,7 +44,7 @@ export const LinksForm:FC = () => {
                         </FormItem>
                     </Col>
                 </Row>
-            </Card>
-        </div>
+        </CardBlock>
     )
+
 }

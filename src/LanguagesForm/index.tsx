@@ -1,12 +1,13 @@
 import { FC, useMemo, useEffect } from "react";
-import { Row, Input, Col, Button, Card, Collapse, Slider } from "antd";
+import { Row, Input, Col, Slider } from "antd";
 import { useFieldArray } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { defaultFormData, setLanguages } from "../store/slices";
 import { useDispatch } from "react-redux";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined} from "@ant-design/icons";
 import { FormItem } from "react-hook-form-antd";
 import { useDebouncedCallback } from "use-debounce";
+import { CardBlock } from "../Card";
 
 export const LanguagesForm:FC = () => {
 
@@ -66,21 +67,9 @@ export const LanguagesForm:FC = () => {
         }))
     }, [fields, JSON.stringify(values)])
 
-    return (
-        <div className="form-block">
-            <Card title="Languages" bordered={false}>
-                <Collapse 
-                    items={collapseItems}
-                    bordered={false}
-                />
-                <div className="form-button_add-wrapper">
-                    <Button 
-                        onClick={() => append({ lang: "", level: 0, levelDesc: "" })}
-                        className="form-button_add"
-                        icon={<PlusOutlined />}
-                    >Add</Button>
-                </div>
-            </Card>
-        </div>
-    )
+    return <CardBlock 
+                title="Languages"
+                collapseItems={collapseItems}
+                onAppend={() => append({ lang: "", level: 0, levelDesc: "" })}
+            />
 }
